@@ -282,7 +282,8 @@
       overflow: visible;
       display: grid;
       gap: 12px;
-      margin-bottom: 16px;
+      margin-top: 12px;
+      margin-bottom: 0;
       padding: 16px;
       border: 1px solid var(--line);
       border-radius: var(--radius);
@@ -487,9 +488,92 @@
     }
 
     .closet-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      min-height: 278px;
+      overflow: hidden;
+      border-radius: var(--radius);
+    }
+
+    .closet-actions {
+      display: flex;
+      justify-content: center;
+      margin-top: 12px;
+    }
+
+    .closet-actions .button {
+      min-width: 148px;
+    }
+
+    .closet-marquee {
+      position: relative;
+      overflow: hidden;
+      padding: 4px 0 14px;
+    }
+
+    .closet-marquee-track {
+      display: flex;
       gap: 12px;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      scroll-snap-type: x proximity;
+      scrollbar-width: none;
+      overscroll-behavior-x: contain;
+      padding: 0 2px 4px;
+    }
+
+    .closet-marquee-track::-webkit-scrollbar {
+      display: none;
+    }
+
+    .closet-scroll-button {
+      position: absolute;
+      top: 50%;
+      z-index: 4;
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.38);
+      border-radius: 50%;
+      background: rgba(45, 45, 45, 0.62);
+      color: var(--paper);
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-50%) scale(0.94);
+      transition: opacity 0.18s ease, transform 0.18s ease, background 0.18s ease;
+      backdrop-filter: blur(8px);
+    }
+
+    .closet-scroll-button:hover {
+      background: rgba(45, 45, 45, 0.78);
+      transform: translateY(-50%) scale(1);
+    }
+
+    .closet-scroll-button:disabled {
+      opacity: 0 !important;
+      pointer-events: none;
+    }
+
+    .closet-scroll-button.is-left {
+      left: 8px;
+    }
+
+    .closet-scroll-button.is-right {
+      right: 8px;
+    }
+
+    .closet-marquee:hover .closet-scroll-button,
+    .closet-marquee:focus-within .closet-scroll-button {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .closet-marquee .clothes-card {
+      width: clamp(180px, 34vw, 220px);
+      flex: 0 0 clamp(180px, 34vw, 220px);
+      scroll-snap-align: start;
     }
 
     .clothes-card,
@@ -628,29 +712,55 @@
 
     .weather-scene {
       display: grid;
-      gap: 14px;
-      margin-bottom: 16px;
-      padding: 14px;
+      grid-template-columns: minmax(180px, 1fr) minmax(150px, 0.78fr) minmax(260px, 1.25fr);
+      align-items: end;
+      gap: 10px;
+      margin: 12px 0 16px;
+      padding: 10px;
       border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(232, 213, 183, 0.28));
+      border-radius: var(--soft-radius);
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .weather-scene > * {
+      min-width: 0;
+    }
+
+    .weather-scene .field-label {
+      margin-bottom: 5px;
+      font-size: 12px;
+      opacity: 0.82;
+    }
+
+    .weather-scene .text-input {
+      min-height: 34px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+    }
+
+    .weather-scene .button {
+      min-height: 34px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 12px;
     }
 
     .weather-row {
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto;
-      gap: 8px;
+      gap: 6px;
       align-items: end;
     }
 
     .weather-card {
-      min-height: 82px;
-      padding: 14px;
+      min-height: 54px;
+      padding: 9px 10px;
       border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: linear-gradient(135deg, var(--paper), rgba(232, 213, 183, 0.22));
+      border-radius: var(--soft-radius);
+      background: var(--paper);
       display: grid;
-      gap: 8px;
+      gap: 5px;
     }
 
     .weather-main {
@@ -661,47 +771,49 @@
     }
 
     .temperature {
-      font-size: 32px;
+      font-size: 24px;
       font-weight: 820;
       line-height: 1;
     }
 
     .weather-desc {
       color: var(--muted);
-      font-size: 14px;
+      font-size: 12px;
       text-align: right;
     }
 
     .weather-meta {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 6px;
       color: var(--muted);
-      font-size: 13px;
+      font-size: 11px;
     }
 
     .weather-meta span {
-      padding: 5px 8px;
+      padding: 3px 7px;
       border-radius: 999px;
       background: rgba(45, 45, 45, 0.05);
     }
 
     .scene-grid {
       display: grid;
-      grid-template-columns: repeat(6, minmax(0, 1fr));
-      gap: 8px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
     }
 
     .scene-button {
-      min-height: 64px;
+      min-height: 44px;
       display: grid;
       place-items: center;
+      grid-template-columns: auto 1fr;
       gap: 5px;
-      padding: 8px 6px;
+      padding: 6px 7px;
       border: 1px solid var(--line);
       border-radius: var(--soft-radius);
       background: var(--paper);
       color: var(--muted);
+      font-size: 12px;
       font-weight: 760;
       transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
     }
@@ -718,14 +830,14 @@
     }
 
     .scene-mark {
-      width: 28px;
-      height: 28px;
+      width: 22px;
+      height: 22px;
       display: grid;
       place-items: center;
       border-radius: 50%;
       background: var(--warm);
       color: var(--ink);
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 860;
     }
 
@@ -879,10 +991,38 @@
     .favorite-apply {
       min-width: 0;
       display: grid;
-      gap: 4px;
+      gap: 8px;
       padding: 0;
       background: transparent;
       text-align: left;
+    }
+
+    .favorite-thumbs {
+      display: flex;
+      gap: 6px;
+      overflow: hidden;
+    }
+
+    .favorite-thumb {
+      width: 48px;
+      height: 48px;
+      flex: 0 0 48px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(232, 213, 183, 0.28);
+    }
+
+    .favorite-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .favorite-copy {
+      display: grid;
+      gap: 4px;
+      min-width: 0;
     }
 
     .favorite-title {
@@ -1155,10 +1295,6 @@
       .workspace {
         grid-template-columns: 1fr;
       }
-
-      .closet-grid {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-      }
     }
 
     @media (max-width: 820px) {
@@ -1183,9 +1319,17 @@
         width: 100%;
       }
 
-      .closet-grid,
+      .weather-scene {
+        grid-template-columns: 1fr;
+      }
+
       .outfit-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .closet-marquee .clothes-card {
+        width: clamp(180px, 46vw, 220px);
+        flex-basis: clamp(180px, 46vw, 220px);
       }
 
       .scene-grid {
@@ -1258,10 +1402,14 @@
             <h2 class="module-title" id="closetTitle">管理你的单品</h2>
             <p class="module-note">添加、编辑、删除和分类浏览，数据会保存在本机浏览器。</p>
           </div>
-          <button class="button primary" id="toggleUploadBtn" type="button">添加衣服</button>
         </div>
 
         <div class="closet-body">
+          <nav class="tabs" id="categoryTabs" aria-label="衣服分类"></nav>
+          <div class="closet-grid" id="closetGrid"></div>
+          <div class="closet-actions">
+            <button class="button primary" id="toggleUploadBtn" type="button">添加单品</button>
+          </div>
           <section class="upload-panel" id="uploadPanel" hidden>
             <div class="upload-panel-head">
               <p>衣橱补给站已开启，图片丢进来就能变成统一风格卡片。</p>
@@ -1291,9 +1439,6 @@
             </div>
             <ul class="status-list" id="statusList"></ul>
           </section>
-
-          <nav class="tabs" id="categoryTabs" aria-label="衣服分类"></nav>
-          <div class="closet-grid" id="closetGrid"></div>
         </div>
       </section>
 
@@ -1307,6 +1452,13 @@
         </div>
 
         <div class="outfit-body">
+          <div class="outfit-toolbar">
+            <button class="button primary" id="shuffleBtn" type="button">换一套</button>
+            <button class="button warm" id="favoriteCurrentBtn" type="button">收藏这套穿搭</button>
+          </div>
+
+          <section class="outfit-stage" id="outfitStage" aria-live="polite"></section>
+
           <section class="weather-scene" aria-label="天气和场景选择">
             <div class="weather-row">
               <div>
@@ -1344,13 +1496,6 @@
               <div class="scene-grid" id="sceneGrid"></div>
             </div>
           </section>
-
-          <div class="outfit-toolbar">
-            <button class="button primary" id="shuffleBtn" type="button">换一套</button>
-            <button class="button warm" id="favoriteCurrentBtn" type="button">收藏这套穿搭</button>
-          </div>
-
-          <section class="outfit-stage" id="outfitStage" aria-live="polite"></section>
 
           <section class="favorites-panel">
             <div class="favorites-header">
@@ -1539,7 +1684,7 @@
       function bindEvents() {
         dom.toggleUploadBtn.addEventListener("click", () => {
           dom.uploadPanel.hidden = !dom.uploadPanel.hidden;
-          dom.toggleUploadBtn.textContent = dom.uploadPanel.hidden ? "添加衣服" : "收起添加";
+          dom.toggleUploadBtn.textContent = dom.uploadPanel.hidden ? "添加单品" : "收起添加";
         });
 
         /* 数据管理入口藏在添加面板的更多菜单里，降低误触风险。 */
@@ -1585,24 +1730,24 @@
         });
 
         dom.closetGrid.addEventListener("click", (event) => {
+          const scrollButton = event.target.closest("[data-scroll-closet]");
           const menuButton = event.target.closest("[data-menu-id]");
           const editButton = event.target.closest("[data-edit-id]");
           const deleteButton = event.target.closest("[data-delete-id]");
-          const addButton = event.target.closest("[data-open-upload]");
-          if (menuButton) toggleCardMenu(menuButton.dataset.menuId);
+          if (scrollButton) {
+            scrollCloset(Number(scrollButton.dataset.scrollCloset));
+            return;
+          }
+          if (menuButton) toggleCardMenu(menuButton.closest(".clothes-card"));
           if (editButton) editItem(editButton.dataset.editId);
           if (deleteButton) deleteItem(deleteButton.dataset.deleteId);
-          if (addButton) {
-            dom.uploadPanel.hidden = false;
-            dom.toggleUploadBtn.textContent = "收起添加";
-            dom.fileInput.click();
-          }
         });
 
         document.addEventListener("click", (event) => {
           if (!event.target.closest(".clothes-card")) closeCardMenus();
           if (!event.target.closest("#dataMenu")) dom.dataMenu.classList.remove("is-open");
         });
+        window.addEventListener("resize", updateClosetScrollButtons);
 
         dom.cityInput.addEventListener("keydown", (event) => {
           if (event.key === "Enter") {
@@ -1638,8 +1783,16 @@
           renderFavorites();
         });
         dom.favoritesList.addEventListener("click", (event) => {
+          const thumb = event.target.closest("[data-favorite-item-id]");
           const applyButton = event.target.closest("[data-apply-favorite]");
           const deleteButton = event.target.closest("[data-delete-favorite]");
+          if (thumb) {
+            event.preventDefault();
+            const itemId = thumb.dataset.favoriteItemId;
+            if (state.items.some((item) => item.id === itemId)) editItem(itemId);
+            else showToast("这个收藏里的单品不在当前衣橱中。", "warn");
+            return;
+          }
           if (applyButton) applyFavorite(applyButton.dataset.applyFavorite);
           if (deleteButton) deleteFavorite(deleteButton.dataset.deleteFavorite);
         });
@@ -1693,15 +1846,30 @@
             <div class="empty-state" style="grid-column: 1 / -1;">
               <div>
                 <h3>${state.items.length ? "这个格子暂时空空的" : "衣橱空荡荡，快来塞满它！"}</h3>
-                <p>${state.items.length ? "换个分类看看，或者继续喂它几件新衣服。" : "点击“添加衣服”上传图片，衣服会统一处理成清爽的方形卡片。"}</p>
-                <button class="button warm" type="button" data-open-upload>添加衣服</button>
+                <p>${state.items.length ? "换个分类看看，或者继续喂它几件新衣服。" : "点击下方“添加单品”上传图片，衣服会统一处理成清爽的方形卡片。"}</p>
               </div>
             </div>
           `;
           return;
         }
 
-        dom.closetGrid.innerHTML = visibleItems.map((item) => `
+        const cards = visibleItems.map((item) => renderClothesCard(item)).join("");
+        dom.closetGrid.innerHTML = `
+          <div class="closet-marquee" aria-label="${escapeHtml(state.activeCategory)}单品横向展示">
+            <button class="closet-scroll-button is-left" type="button" data-scroll-closet="-1" aria-label="向左滚动单品">‹</button>
+            <div class="closet-marquee-track" tabindex="0">
+              ${cards}
+            </div>
+            <button class="closet-scroll-button is-right" type="button" data-scroll-closet="1" aria-label="向右滚动单品">›</button>
+          </div>
+        `;
+        const track = dom.closetGrid.querySelector(".closet-marquee-track");
+        if (track) track.addEventListener("scroll", updateClosetScrollButtons, { passive: true });
+        window.setTimeout(updateClosetScrollButtons, 0);
+      }
+
+      function renderClothesCard(item) {
+        return `
           <article class="clothes-card" data-card-id="${escapeHtml(item.id)}">
             <div class="clothes-image-wrap">
               <img class="clothes-image" src="${item.image}" alt="${escapeHtml(item.name)}">
@@ -1721,7 +1889,30 @@
               </div>
             </div>
           </article>
-        `).join("");
+        `;
+      }
+
+      function scrollCloset(direction) {
+        /* 每次按当前卡片宽度加间距滚动一格，保持手动切换的节奏清晰。 */
+        const track = dom.closetGrid.querySelector(".closet-marquee-track");
+        const card = track?.querySelector(".clothes-card");
+        if (!track || !card || !Number.isFinite(direction)) return;
+        const gap = Number.parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap) || 12;
+        const step = card.getBoundingClientRect().width + gap;
+        if (track.scrollBy) track.scrollBy({ left: step * direction, behavior: "smooth" });
+        else track.scrollLeft += step * direction;
+        window.setTimeout(updateClosetScrollButtons, 280);
+      }
+
+      function updateClosetScrollButtons() {
+        const track = dom.closetGrid.querySelector(".closet-marquee-track");
+        const leftButton = dom.closetGrid.querySelector('[data-scroll-closet="-1"]');
+        const rightButton = dom.closetGrid.querySelector('[data-scroll-closet="1"]');
+        if (!track || !leftButton || !rightButton) return;
+        const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
+        const canScroll = maxScroll > 2;
+        leftButton.disabled = !canScroll;
+        rightButton.disabled = !canScroll;
       }
 
       function renderWeather() {
@@ -1849,18 +2040,39 @@
           return;
         }
         dom.favoritesList.innerHTML = state.favorites.map((favorite) => {
-          const names = favorite.itemIds.map((id) => state.items.find((item) => item.id === id)?.name).filter(Boolean);
+          const displayItems = getFavoriteDisplayItems(favorite);
+          const names = displayItems.map((item) => item.name).filter(Boolean);
           const title = names.length ? names.join(" + ") : "收藏穿搭";
+          const thumbs = displayItems
+            .filter((item) => item.image)
+            .map((item) => `
+              <span class="favorite-thumb" title="${escapeHtml(item.name)}" data-favorite-item-id="${escapeHtml(item.id)}">
+                <img src="${item.image}" alt="${escapeHtml(item.name)}">
+              </span>
+            `).join("");
           return `
             <div class="favorite-row">
               <button class="favorite-apply" type="button" data-apply-favorite="${escapeHtml(favorite.id)}">
-                <span class="favorite-title">${escapeHtml(title)}</span>
-                <span class="favorite-meta">${escapeHtml(favorite.scene)} · ${escapeHtml(favorite.weather?.type || "天气")} · ${formatDate(favorite.createdAt)}</span>
+                ${thumbs ? `<span class="favorite-thumbs">${thumbs}</span>` : ""}
+                <span class="favorite-copy">
+                  <span class="favorite-title">${escapeHtml(title)}</span>
+                  <span class="favorite-meta">${escapeHtml(favorite.scene)} · ${escapeHtml(favorite.weather?.type || "天气")} · ${formatDate(favorite.createdAt)}</span>
+                </span>
               </button>
               <button class="icon-button" type="button" aria-label="删除收藏" data-delete-favorite="${escapeHtml(favorite.id)}">×</button>
             </div>
           `;
         }).join("");
+      }
+
+      function getFavoriteDisplayItems(favorite) {
+        /* 旧收藏只保存 ID，新收藏会保存图片快照；这里优先用当前衣橱数据，缺失时回退到收藏快照。 */
+        const snapshots = Array.isArray(favorite.items) ? favorite.items : [];
+        return favorite.itemIds.map((itemId) => {
+          const currentItem = state.items.find((item) => item.id === itemId);
+          const snapshot = snapshots.find((item) => item.id === itemId);
+          return currentItem || snapshot || null;
+        }).filter(Boolean);
       }
 
       async function bootAutoOutfit() {
@@ -2193,6 +2405,13 @@
         state.favorites.unshift({
           id: createId("favorite"),
           itemIds: state.currentOutfit.itemIds,
+          items: state.currentOutfit.slots.map((slot) => ({
+            id: slot.item.id,
+            name: slot.item.name,
+            category: slot.item.category,
+            image: slot.item.image,
+            slot: slot.slot
+          })),
           signature: state.currentOutfit.signature,
           weather: state.weather,
           scene: state.settings.scene,
@@ -2463,8 +2682,7 @@
         });
       }
 
-      function toggleCardMenu(id) {
-        const card = dom.closetGrid.querySelector(`[data-card-id="${cssEscape(id)}"]`);
+      function toggleCardMenu(card) {
         const shouldOpen = card && !card.classList.contains("is-menu-open");
         closeCardMenus();
         if (shouldOpen) card.classList.add("is-menu-open");
@@ -2792,14 +3010,26 @@
         if (!Array.isArray(rawFavorites)) return [];
         return rawFavorites
           .filter((favorite) => favorite && Array.isArray(favorite.itemIds))
-          .map((favorite) => ({
-            id: typeof favorite.id === "string" ? favorite.id : createId("favorite"),
-            itemIds: favorite.itemIds.map(String),
-            signature: favorite.signature || favorite.itemIds.map(String).sort().join("|"),
-            weather: favorite.weather || null,
-            scene: favorite.scene || "上班",
-            createdAt: favorite.createdAt || new Date().toISOString()
-          }));
+          .map((favorite) => {
+            const snapshots = Array.isArray(favorite.items) ? favorite.items : [];
+            return {
+              id: typeof favorite.id === "string" ? favorite.id : createId("favorite"),
+              itemIds: favorite.itemIds.map(String),
+              items: snapshots
+                .filter((item) => item && typeof item.id === "string" && typeof item.image === "string")
+                .map((item) => ({
+                  id: item.id,
+                  name: String(item.name || "收藏单品").slice(0, 48),
+                  category: ITEM_CATEGORIES.includes(item.category) ? item.category : "配饰",
+                  image: item.image,
+                  slot: item.slot || item.category || "单品"
+                })),
+              signature: favorite.signature || favorite.itemIds.map(String).sort().join("|"),
+              weather: favorite.weather || null,
+              scene: favorite.scene || "上班",
+              createdAt: favorite.createdAt || new Date().toISOString()
+            };
+          });
       }
 
       function syncInputsFromSettings() {
