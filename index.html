@@ -3,23 +3,24 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>今天穿什么</title>
+  <title>Outfit of The Day</title>
   <style>
     :root {
       --ink: #2D2D2D;
       --paper: #FFFFFF;
       --warm: #E8D5B7;
-      --warm-deep: #B99568;
-      --mist: #F6F4EF;
-      --line: #E7E0D6;
-      --muted: #746E66;
-      --sage: #718275;
-      --rose: #B96B5D;
-      --blue: #667A94;
-      --shadow: 0 18px 48px rgba(45, 45, 45, 0.09);
-      --soft-shadow: 0 10px 28px rgba(45, 45, 45, 0.10);
-      --radius: 8px;
-      --image-radius: 12px;
+      --warm-deep: #E8D5B7;
+      --mist: #FFFFFF;
+      --line: #E8D5B7;
+      --muted: #2D2D2D;
+      --sage: #2D2D2D;
+      --rose: #2D2D2D;
+      --blue: #2D2D2D;
+      --shadow: 0 22px 58px rgba(45, 45, 45, 0.10);
+      --soft-shadow: 0 12px 32px rgba(45, 45, 45, 0.12);
+      --radius: 22px;
+      --soft-radius: 18px;
+      --image-radius: 20px;
     }
 
     * {
@@ -39,7 +40,7 @@
       margin: 0;
       color: var(--ink);
       background:
-        linear-gradient(180deg, rgba(232, 213, 183, 0.32), rgba(246, 244, 239, 0) 260px),
+        linear-gradient(180deg, rgba(232, 213, 183, 0.34), rgba(255, 255, 255, 0) 300px),
         var(--mist);
     }
 
@@ -88,7 +89,7 @@
       padding: 16px 18px;
       border: 1px solid rgba(45, 45, 45, 0.08);
       border-radius: var(--radius);
-      background: rgba(255, 255, 255, 0.86);
+      background: rgba(255, 255, 255, 0.92);
       box-shadow: var(--shadow);
       backdrop-filter: blur(14px);
     }
@@ -97,8 +98,11 @@
       margin: 0;
       font-size: clamp(28px, 4vw, 44px);
       line-height: 1;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
       font-weight: 820;
       letter-spacing: 0;
+      color: var(--ink);
+      text-shadow: none;
     }
 
     .nav-meta {
@@ -120,9 +124,10 @@
       min-width: 0;
       border: 1px solid rgba(45, 45, 45, 0.08);
       border-radius: var(--radius);
-      background: rgba(255, 255, 255, 0.88);
+      background: rgba(255, 255, 255, 0.9);
       box-shadow: var(--shadow);
       backdrop-filter: blur(14px);
+      animation: fadeIn 0.34s ease both;
     }
 
     .module-header {
@@ -136,7 +141,7 @@
 
     .eyebrow {
       margin: 0 0 6px;
-      color: var(--warm-deep);
+      color: var(--ink);
       font-size: 13px;
       font-weight: 800;
     }
@@ -173,7 +178,7 @@
     }
 
     .button:hover:not(:disabled) {
-      transform: translateY(-1px);
+      transform: translateY(-2px);
       box-shadow: var(--soft-shadow);
     }
 
@@ -193,8 +198,12 @@
     }
 
     .button.danger {
-      background: var(--rose);
+      background: var(--ink);
       color: var(--paper);
+    }
+
+    .button.is-bouncing {
+      animation: popBounce 0.42s ease both;
     }
 
     .button.ghost {
@@ -215,6 +224,25 @@
     @keyframes spin {
       to {
         transform: rotate(360deg);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+    }
+
+    @keyframes popBounce {
+      0% {
+        transform: scale(1);
+      }
+      38% {
+        transform: scale(1.08) translateY(-2px);
+      }
+      100% {
+        transform: scale(1);
       }
     }
 
@@ -250,14 +278,90 @@
     }
 
     .upload-panel {
-      overflow: hidden;
+      position: relative;
+      overflow: visible;
       display: grid;
       gap: 12px;
       margin-bottom: 16px;
-      padding: 14px;
+      padding: 16px;
       border: 1px solid var(--line);
       border-radius: var(--radius);
-      background: rgba(246, 244, 239, 0.72);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(232, 213, 183, 0.26));
+    }
+
+    .upload-panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 36px;
+    }
+
+    .upload-panel-head p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .data-menu {
+      position: relative;
+      flex: 0 0 auto;
+    }
+
+    .data-menu-trigger {
+      width: 38px;
+      height: 38px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      color: var(--ink);
+      font-size: 20px;
+      font-weight: 900;
+      box-shadow: 0 8px 18px rgba(45, 45, 45, 0.08);
+    }
+
+    .data-menu-panel {
+      position: absolute;
+      top: 44px;
+      right: 0;
+      z-index: 8;
+      min-width: 182px;
+      display: none;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--soft-radius);
+      background: var(--paper);
+      box-shadow: var(--soft-shadow);
+    }
+
+    .data-menu.is-open .data-menu-panel {
+      display: grid;
+      animation: fadeIn 0.18s ease both;
+    }
+
+    .data-menu-panel button {
+      min-height: 40px;
+      padding: 10px 12px;
+      background: var(--paper);
+      text-align: left;
+      font-size: 14px;
+    }
+
+    .data-menu-panel button:hover {
+      background: rgba(232, 213, 183, 0.28);
+    }
+
+    .data-menu-divider {
+      height: 1px;
+      background: var(--line);
+      margin: 4px 0;
+    }
+
+    .data-menu-panel .danger-text {
+      color: var(--rose);
     }
 
     .drop-zone {
@@ -265,17 +369,19 @@
       display: grid;
       place-items: center;
       text-align: center;
-      border: 1.5px dashed #CDBB9F;
+      border: 2px dashed rgba(45, 45, 45, 0.22);
       border-radius: var(--radius);
-      background: rgba(232, 213, 183, 0.24);
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.66), rgba(232, 213, 183, 0.24)),
+        rgba(232, 213, 183, 0.22);
       padding: 18px;
       transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
     }
 
     .drop-zone.is-dragging {
       border-color: var(--ink);
-      background: rgba(232, 213, 183, 0.48);
-      transform: translateY(-1px);
+      background: rgba(232, 213, 183, 0.32);
+      transform: translateY(-2px) rotate(-0.4deg);
     }
 
     .drop-zone strong {
@@ -308,7 +414,7 @@
       height: 8px;
       overflow: hidden;
       border-radius: 999px;
-      background: #ECE7DE;
+      background: rgba(232, 213, 183, 0.42);
     }
 
     .progress-fill {
@@ -345,13 +451,13 @@
     }
 
     .status-item.success {
-      color: #3F6D55;
-      background: rgba(113, 130, 117, 0.13);
+      color: var(--ink);
+      background: rgba(232, 213, 183, 0.28);
     }
 
     .status-item.error {
-      color: #A64E42;
-      background: rgba(185, 107, 93, 0.12);
+      color: var(--ink);
+      background: rgba(232, 213, 183, 0.18);
     }
 
     .tabs {
@@ -375,7 +481,7 @@
     }
 
     .tab-button.is-active {
-      border-color: var(--ink);
+      border-color: transparent;
       background: var(--ink);
       color: var(--paper);
     }
@@ -393,7 +499,8 @@
       border: 1px solid var(--line);
       border-radius: var(--radius);
       background: var(--paper);
-      box-shadow: 0 8px 22px rgba(45, 45, 45, 0.06);
+      box-shadow: 0 10px 26px rgba(45, 45, 45, 0.08);
+      animation: fadeIn 0.28s ease both;
     }
 
     .clothes-image-wrap,
@@ -401,7 +508,7 @@
       position: relative;
       aspect-ratio: 1 / 1;
       overflow: hidden;
-      background: #F3EFE7;
+      background: rgba(232, 213, 183, 0.28);
     }
 
     .clothes-image,
@@ -426,7 +533,7 @@
       top: 8px;
       padding: 5px 8px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.92);
+      background: rgba(255, 255, 255, 0.94);
       color: var(--ink);
       font-size: 12px;
       font-weight: 820;
@@ -461,7 +568,7 @@
       display: none;
       overflow: hidden;
       border: 1px solid var(--line);
-      border-radius: var(--radius);
+      border-radius: var(--soft-radius);
       background: var(--paper);
       box-shadow: var(--soft-shadow);
     }
@@ -512,8 +619,8 @@
       max-width: 100%;
       padding: 4px 7px;
       border-radius: 999px;
-      background: rgba(232, 213, 183, 0.42);
-      color: #675744;
+      background: rgba(232, 213, 183, 0.32);
+      color: var(--ink);
       font-size: 12px;
       line-height: 1.2;
       overflow-wrap: anywhere;
@@ -526,7 +633,7 @@
       padding: 14px;
       border: 1px solid var(--line);
       border-radius: var(--radius);
-      background: rgba(246, 244, 239, 0.72);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(232, 213, 183, 0.28));
     }
 
     .weather-row {
@@ -541,7 +648,7 @@
       padding: 14px;
       border: 1px solid var(--line);
       border-radius: var(--radius);
-      background: linear-gradient(135deg, #fff, #fbf6ed);
+      background: linear-gradient(135deg, var(--paper), rgba(232, 213, 183, 0.22));
       display: grid;
       gap: 8px;
     }
@@ -592,7 +699,7 @@
       gap: 5px;
       padding: 8px 6px;
       border: 1px solid var(--line);
-      border-radius: var(--radius);
+      border-radius: var(--soft-radius);
       background: var(--paper);
       color: var(--muted);
       font-weight: 760;
@@ -600,12 +707,12 @@
     }
 
     .scene-button:hover {
-      transform: translateY(-1px);
+      transform: translateY(-2px) rotate(-0.5deg);
       box-shadow: var(--soft-shadow);
     }
 
     .scene-button.is-active {
-      border-color: var(--ink);
+      border-color: transparent;
       background: var(--ink);
       color: var(--paper);
     }
@@ -637,17 +744,21 @@
       border-radius: var(--radius);
       background: var(--paper);
       overflow: hidden;
-      transition: opacity 0.2s ease, transform 0.2s ease;
+      transform-style: preserve-3d;
+      transition: opacity 0.24s ease, transform 0.24s ease, filter 0.24s ease;
     }
 
     .outfit-stage.is-switching {
-      opacity: 0.42;
-      transform: translateY(6px);
+      opacity: 0.48;
+      filter: saturate(0.78);
+      transform: perspective(980px) rotateY(8deg) translateY(8px);
     }
 
     .outfit-hero {
       padding: 16px;
-      background: linear-gradient(135deg, rgba(232, 213, 183, 0.5), rgba(255, 255, 255, 0.9));
+      background:
+        radial-gradient(circle at 96% 14%, rgba(232, 213, 183, 0.42), transparent 110px),
+        linear-gradient(135deg, rgba(232, 213, 183, 0.24), rgba(255, 255, 255, 0.92));
       border-bottom: 1px solid var(--line);
     }
 
@@ -679,7 +790,7 @@
       min-height: 30px;
       padding: 6px 9px;
       border-radius: 999px;
-      background: rgba(45, 45, 45, 0.86);
+      background: rgba(45, 45, 45, 0.9);
       color: var(--paper);
       font-size: 12px;
       font-weight: 800;
@@ -692,7 +803,7 @@
       margin: 12px 0 0;
       padding: 0;
       list-style: none;
-      color: #8C5D35;
+      color: var(--ink);
       line-height: 1.45;
       font-size: 13px;
     }
@@ -704,7 +815,9 @@
       text-align: center;
       border: 1px dashed var(--line);
       border-radius: var(--radius);
-      background: rgba(255, 255, 255, 0.72);
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.86), rgba(232, 213, 183, 0.18)),
+        rgba(255, 255, 255, 0.72);
       padding: 24px;
     }
 
@@ -758,8 +871,9 @@
       align-items: center;
       padding: 10px;
       border: 1px solid var(--line);
-      border-radius: var(--radius);
+      border-radius: var(--soft-radius);
       background: var(--paper);
+      animation: fadeIn 0.24s ease both;
     }
 
     .favorite-apply {
@@ -812,7 +926,7 @@
       max-height: min(720px, calc(100vh - 28px));
       overflow: auto;
       border-radius: var(--radius);
-      background: var(--paper);
+      background: linear-gradient(135deg, var(--paper), rgba(232, 213, 183, 0.22));
       box-shadow: 0 28px 80px rgba(45, 45, 45, 0.22);
     }
 
@@ -846,7 +960,7 @@
       overflow: hidden;
       border: 1px solid var(--line);
       border-radius: var(--radius);
-      background: #F6F1E8;
+      background: linear-gradient(135deg, rgba(232, 213, 183, 0.28), var(--paper));
     }
 
     .preview-box img {
@@ -860,6 +974,33 @@
       gap: 12px;
     }
 
+    .form-two {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 10px;
+    }
+
+    .range-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 36px;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .range-input {
+      width: 100%;
+      accent-color: var(--ink);
+    }
+
+    .warm-value {
+      min-height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: rgba(232, 213, 183, 0.34);
+      font-weight: 900;
+    }
+
     .modal-footer {
       display: flex;
       justify-content: flex-end;
@@ -871,7 +1012,7 @@
       width: min(460px, calc(100vw - 28px));
       padding: 20px;
       border-radius: var(--radius);
-      background: var(--paper);
+      background: linear-gradient(135deg, var(--paper), rgba(232, 213, 183, 0.22));
       box-shadow: 0 28px 80px rgba(45, 45, 45, 0.22);
     }
 
@@ -906,7 +1047,7 @@
       display: grid;
       grid-template-rows: auto minmax(0, 1fr);
       border-radius: var(--radius) 0 0 0;
-      background: var(--paper);
+      background: linear-gradient(135deg, var(--paper), rgba(232, 213, 183, 0.22));
       box-shadow: -20px 0 60px rgba(45, 45, 45, 0.18);
     }
 
@@ -944,9 +1085,10 @@
       gap: 8px;
       padding: 8px;
       border: 1px solid var(--line);
-      border-radius: var(--radius);
+      border-radius: var(--soft-radius);
       background: var(--paper);
       text-align: left;
+      animation: fadeIn 0.24s ease both;
     }
 
     .replace-card.is-active {
@@ -959,7 +1101,7 @@
       aspect-ratio: 1 / 1;
       object-fit: cover;
       border-radius: var(--image-radius);
-      background: #F3EFE7;
+      background: rgba(232, 213, 183, 0.28);
     }
 
     .replace-card strong {
@@ -1104,7 +1246,7 @@
 <body>
   <div class="app-shell">
     <header class="top-nav">
-      <h1>今天穿什么</h1>
+      <h1>Outfit of The Day</h1>
       <p class="nav-meta" id="navMeta">正在读取本地衣橱。</p>
     </header>
 
@@ -1121,6 +1263,18 @@
 
         <div class="closet-body">
           <section class="upload-panel" id="uploadPanel" hidden>
+            <div class="upload-panel-head">
+              <p>衣橱补给站已开启，图片丢进来就能变成统一风格卡片。</p>
+              <div class="data-menu" id="dataMenu">
+                <button class="data-menu-trigger" id="dataMenuBtn" type="button" aria-label="打开数据管理菜单">···</button>
+                <div class="data-menu-panel" id="dataMenuPanel">
+                  <button type="button" id="exportDataBtn">导出数据</button>
+                  <button type="button" id="importDataBtn">导入数据</button>
+                  <div class="data-menu-divider" aria-hidden="true"></div>
+                  <button class="danger-text" type="button" id="clearDataBtn">一键清空</button>
+                </div>
+              </div>
+            </div>
             <button class="drop-zone" id="dropZone" type="button">
               <span>
                 <strong>选择或拖拽衣服图片</strong>
@@ -1128,6 +1282,7 @@
               </span>
             </button>
             <input class="hidden-input" id="fileInput" type="file" accept="image/*" multiple>
+            <input class="hidden-input" id="importInput" type="file" accept="application/json,.json">
             <div class="progress-box" id="progressBox" hidden>
               <div class="progress-bar" aria-hidden="true">
                 <div class="progress-fill" id="progressFill"></div>
@@ -1232,6 +1387,25 @@
             <label class="field-label" for="itemTagsInput">标签</label>
             <input class="text-input" id="itemTagsInput" type="text" placeholder="白色, 通勤, 棉, 薄款">
           </div>
+          <div class="form-two">
+            <div>
+              <label class="field-label" for="itemSeasonSelect">季节</label>
+              <select class="select-input" id="itemSeasonSelect">
+                <option value="四季">四季</option>
+                <option value="春">春</option>
+                <option value="夏">夏</option>
+                <option value="秋">秋</option>
+                <option value="冬">冬</option>
+              </select>
+            </div>
+            <div>
+              <label class="field-label" for="itemWarmLevelInput">保暖等级</label>
+              <div class="range-row">
+                <input class="range-input" id="itemWarmLevelInput" type="range" min="1" max="5" step="1">
+                <span class="warm-value" id="warmLevelValue">3</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="modal-footer">
@@ -1293,8 +1467,14 @@
         closetCountText: document.querySelector("#closetCountText"),
         toggleUploadBtn: document.querySelector("#toggleUploadBtn"),
         uploadPanel: document.querySelector("#uploadPanel"),
+        dataMenu: document.querySelector("#dataMenu"),
+        dataMenuBtn: document.querySelector("#dataMenuBtn"),
+        exportDataBtn: document.querySelector("#exportDataBtn"),
+        importDataBtn: document.querySelector("#importDataBtn"),
+        clearDataBtn: document.querySelector("#clearDataBtn"),
         dropZone: document.querySelector("#dropZone"),
         fileInput: document.querySelector("#fileInput"),
+        importInput: document.querySelector("#importInput"),
         progressBox: document.querySelector("#progressBox"),
         progressFill: document.querySelector("#progressFill"),
         progressText: document.querySelector("#progressText"),
@@ -1318,6 +1498,9 @@
         itemNameInput: document.querySelector("#itemNameInput"),
         itemCategorySelect: document.querySelector("#itemCategorySelect"),
         itemTagsInput: document.querySelector("#itemTagsInput"),
+        itemSeasonSelect: document.querySelector("#itemSeasonSelect"),
+        itemWarmLevelInput: document.querySelector("#itemWarmLevelInput"),
+        warmLevelValue: document.querySelector("#warmLevelValue"),
         itemCancelBtn: document.querySelector("#itemCancelBtn"),
         confirmDialog: document.querySelector("#confirmDialog"),
         confirmTitle: document.querySelector("#confirmTitle"),
@@ -1357,6 +1540,24 @@
         dom.toggleUploadBtn.addEventListener("click", () => {
           dom.uploadPanel.hidden = !dom.uploadPanel.hidden;
           dom.toggleUploadBtn.textContent = dom.uploadPanel.hidden ? "添加衣服" : "收起添加";
+        });
+
+        /* 数据管理入口藏在添加面板的更多菜单里，降低误触风险。 */
+        dom.dataMenuBtn.addEventListener("click", (event) => {
+          event.stopPropagation();
+          dom.dataMenu.classList.toggle("is-open");
+        });
+        dom.exportDataBtn.addEventListener("click", exportData);
+        dom.importDataBtn.addEventListener("click", () => dom.importInput.click());
+        dom.importInput.addEventListener("change", () => {
+          const [file] = dom.importInput.files;
+          if (file) handleImportFile(file);
+          dom.importInput.value = "";
+        });
+        dom.clearDataBtn.addEventListener("click", clearAllData);
+        /* 保暖等级滑块即时回显，便于用户快速判断 1-5 的厚薄程度。 */
+        dom.itemWarmLevelInput.addEventListener("input", () => {
+          dom.warmLevelValue.textContent = dom.itemWarmLevelInput.value;
         });
 
         dom.dropZone.addEventListener("click", () => dom.fileInput.click());
@@ -1400,6 +1601,7 @@
 
         document.addEventListener("click", (event) => {
           if (!event.target.closest(".clothes-card")) closeCardMenus();
+          if (!event.target.closest("#dataMenu")) dom.dataMenu.classList.remove("is-open");
         });
 
         dom.cityInput.addEventListener("keydown", (event) => {
@@ -1426,7 +1628,10 @@
           if (state.items.length) generateOneOutfit({ requireDifferent: true });
         });
 
-        dom.shuffleBtn.addEventListener("click", () => generateOneOutfit({ requireDifferent: true, manual: true }));
+        dom.shuffleBtn.addEventListener("click", () => {
+          triggerBounce(dom.shuffleBtn);
+          generateOneOutfit({ requireDifferent: true, manual: true });
+        });
         dom.favoriteCurrentBtn.addEventListener("click", favoriteCurrentOutfit);
         dom.toggleFavoritesBtn.addEventListener("click", () => {
           state.favoritesOpen = !state.favoritesOpen;
@@ -1487,8 +1692,8 @@
           dom.closetGrid.innerHTML = `
             <div class="empty-state" style="grid-column: 1 / -1;">
               <div>
-                <h3>${state.items.length ? "此分类暂无单品" : "衣橱还是空的，快去添加你的第一件衣服吧！"}</h3>
-                <p>${state.items.length ? "切换其他分类，或继续添加新的衣服。" : "点击“添加衣服”上传图片，衣服会统一处理成清爽的方形卡片。"}</p>
+                <h3>${state.items.length ? "这个格子暂时空空的" : "衣橱空荡荡，快来塞满它！"}</h3>
+                <p>${state.items.length ? "换个分类看看，或者继续喂它几件新衣服。" : "点击“添加衣服”上传图片，衣服会统一处理成清爽的方形卡片。"}</p>
                 <button class="button warm" type="button" data-open-upload>添加衣服</button>
               </div>
             </div>
@@ -1560,8 +1765,8 @@
           dom.outfitStage.innerHTML = `
             <div class="empty-state">
               <div>
-                <h3>衣橱还是空的</h3>
-                <p>添加衣服后，这里会自动生成今日穿搭。</p>
+                <h3>衣橱还在打哈欠</h3>
+                <p>先添加几件衣服，今日穿搭就会自动上线。</p>
               </div>
             </div>
           `;
@@ -1571,7 +1776,7 @@
           dom.outfitStage.innerHTML = `
             <div class="empty-state">
               <div>
-                <h3>准备生成今日穿搭</h3>
+                <h3>穿搭助手正在待命</h3>
                 <p>获取天气后会根据场景生成一套完整搭配。</p>
               </div>
             </div>
@@ -1582,7 +1787,7 @@
           dom.outfitStage.innerHTML = `
             <div class="empty-state">
               <div>
-                <h3>还差一点才能组成完整穿搭</h3>
+                <h3>还差一点点就能出门啦</h3>
                 <p>当前衣橱缺少必要单品，补齐后就能生成完整方案。</p>
                 <ul class="missing-list">
                   ${state.currentOutfit.missingSuggestions.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
@@ -1636,7 +1841,7 @@
           dom.favoritesList.innerHTML = `
             <div class="empty-state" style="min-height: 120px;">
               <div>
-                <h3>还没有收藏</h3>
+                <h3>收藏夹还在等待第一套穿搭</h3>
                 <p>生成喜欢的搭配后，可以收藏并快速应用。</p>
               </div>
             </div>
@@ -1767,39 +1972,45 @@
         const slots = [];
         const used = new Set();
         const missing = [];
+        const isHome = context.scene.label === "居家";
+        const isSport = context.scene.label === "运动";
         const preferDress = shouldUseDress(context, offset);
 
         if (preferDress) {
           const dress = pickItem("连衣裙", context, used, offset);
           if (dress) addSlot(slots, used, "连衣裙", dress);
-          else missing.push("建议添加一件适合当前场景的连衣裙。");
+          else missing.push(getMissingSuggestion("连衣裙", context));
         }
 
         if (!preferDress || !slots.some((slot) => slot.slot === "连衣裙")) {
           const top = pickItem("上衣", context, used, offset);
           const bottom = pickItem("下装", context, used, offset + 1);
           if (top) addSlot(slots, used, "上衣", top);
-          else missing.push("缺少上衣，无法组成上衣+下装方案。");
+          else missing.push(getMissingSuggestion("上衣", context));
           if (bottom) addSlot(slots, used, "下装", bottom);
-          else missing.push("缺少下装，无法组成上衣+下装方案。");
+          else missing.push(getMissingSuggestion("下装", context));
         }
 
-        if (context.needsOuter) {
+        if (context.needsOuter && !isHome) {
           const outer = pickItem("外套", context, used, offset);
           if (outer) addSlot(slots, used, "外套", outer);
-          else missing.push(context.weather.type === "雨" ? "雨天建议添加一件防水外套。" : "当前温度建议添加一件外套。");
+          else missing.push(getMissingSuggestion("外套", context));
         }
 
-        const shoes = pickItem("鞋履", context, used, offset);
-        if (shoes) addSlot(slots, used, "鞋履", shoes);
-        else missing.push("缺少鞋履，无法组成完整穿搭。");
+        if (!isHome) {
+          const shoes = pickItem("鞋履", context, used, offset);
+          if (shoes) addSlot(slots, used, "鞋履", shoes);
+          else missing.push(getMissingSuggestion("鞋履", context));
+        }
 
-        const accessory = pickItem("配饰", context, used, offset);
-        if (accessory) addSlot(slots, used, "配饰", accessory);
+        if (!isHome && !isSport) {
+          const accessory = pickItem("配饰", context, used, offset);
+          if (accessory) addSlot(slots, used, "配饰", accessory);
+        }
 
         const hasBody = slots.some((slot) => slot.slot === "连衣裙") || (slots.some((slot) => slot.slot === "上衣") && slots.some((slot) => slot.slot === "下装"));
-        const hasShoes = slots.some((slot) => slot.slot === "鞋履");
-        const hasOuterIfNeeded = !context.needsOuter || slots.some((slot) => slot.slot === "外套");
+        const hasShoes = isHome || slots.some((slot) => slot.slot === "鞋履");
+        const hasOuterIfNeeded = isHome || !context.needsOuter || slots.some((slot) => slot.slot === "外套");
         const complete = hasBody && hasShoes && hasOuterIfNeeded;
         const signature = outfitSignature(slots.map((slot) => slot.item));
         return {
@@ -1823,6 +2034,7 @@
       }
 
       function shouldUseDress(context, offset) {
+        if (context.scene.label === "运动") return false;
         const hasDress = state.items.some((item) => item.category === "连衣裙");
         const lacksTopOrBottom = !state.items.some((item) => item.category === "上衣") || !state.items.some((item) => item.category === "下装");
         const sceneLikesDress = ["约会", "度假", "派对"].includes(context.scene.label);
@@ -1830,8 +2042,10 @@
       }
 
       function pickItem(category, context, used, offset) {
+        /* 推荐前先执行硬过滤，确保不适合当前温度/场景的单品不会被选中。 */
         const ranked = state.items
           .filter((item) => item.category === category)
+          .filter((item) => !getBlockReason(item, context))
           .map((item) => ({ item, score: scoreItem(item, context) }))
           .sort((a, b) => b.score - a.score);
         if (!ranked.length) return null;
@@ -1852,8 +2066,63 @@
         if (context.weather.type === "雨" && item.category === "外套") score += 9;
         if (context.weather.type === "雨" && /白色|浅色|丝绸|麂皮/.test(text)) score -= 10;
         if (context.weather.type === "晴" && /浅色|白色|防晒|帽/.test(text)) score += 8;
+        if (context.scene.label === "运动" && /运动|速干|透气|弹力|短裤|t恤|T恤|卫衣|运动鞋|跑步/.test(`${item.name} ${item.tags.join(" ")}`)) score += 18;
+        if (context.scene.label === "居家" && /舒适|柔软|宽松|棉|居家|针织/.test(`${item.name} ${item.tags.join(" ")}`)) score += 14;
+        if (context.scene.label === "上班" && /乐福|平底|小白鞋|低跟|短靴|通勤/.test(`${item.name} ${item.tags.join(" ")}`)) score += 10;
+        if (context.weather.tempC >= 20 && item.warmLevel <= 2) score += 8;
+        if (context.weather.tempC < 10 && item.warmLevel >= 4) score += 8;
         score += favoriteScoreForItem(item.id);
         return score;
+      }
+
+      /* 精细化规则：返回阻止推荐的原因；没有原因则表示该单品可参与推荐。 */
+      function getBlockReason(item, context) {
+        const text = itemText(item);
+        if (context.weather.tempC >= 20 && isWinterHeavyItem(item)) {
+          return "20℃以上不推荐冬季厚衣物";
+        }
+        if (context.scene.label === "运动") {
+          if (item.category === "连衣裙" || /半身裙|短裙|连衣裙|裙/.test(text)) return "运动场景不推荐裙装";
+          if (/牛仔/.test(text)) return "运动场景不推荐牛仔裤";
+          if (item.category === "鞋履" && /凉鞋|拖鞋|高跟|细跟|粗跟|坡跟/.test(text)) return "运动场景不推荐凉鞋、拖鞋或高跟鞋";
+          if (item.category === "配饰" || /项链|耳环|耳饰|围巾|手套|毛线帽/.test(text)) return "运动场景不推荐配饰";
+        }
+        if (context.scene.label === "居家") {
+          if (item.category === "鞋履") return "居家场景不推荐鞋履";
+          if (item.category === "配饰") return "居家场景不推荐配饰";
+        }
+        if (context.scene.label === "上班" && item.category === "鞋履" && /高跟|细跟|粗跟|坡跟/.test(text)) {
+          return "上班场景不推荐高跟鞋";
+        }
+        return "";
+      }
+
+      function isWinterHeavyItem(item) {
+        const text = itemText(item);
+        return /羽绒服|羽绒|棉服|派克|派克大衣|厚毛衣|高领毛衣|羊绒衫|羊绒|加绒裤|加绒|棉裤|雪地靴|加绒靴|围巾|手套|毛线帽/.test(text)
+          || (item.season === "冬" && item.warmLevel >= 4)
+          || item.warmLevel >= 5;
+      }
+
+      function getMissingSuggestion(category, context) {
+        const allInCategory = state.items.filter((item) => item.category === category);
+        const blockedReasons = unique(allInCategory.map((item) => getBlockReason(item, context)).filter(Boolean));
+        if (context.scene.label === "运动") {
+          if (category === "鞋履") return "运动场景需要运动鞋，衣橱里还没有合适的，建议添加一双！";
+          if (category === "下装") return "运动场景需要运动裤或短裤，牛仔裤和裙装先休息一下。";
+          if (category === "上衣") return "运动场景需要 T 恤、卫衣或速干上衣，建议补一件轻便上衣。";
+        }
+        if (context.scene.label === "居家") {
+          if (category === "上衣" || category === "下装" || category === "连衣裙") return "居家场景只挑舒适衣物，建议补充柔软宽松的单品。";
+        }
+        if (context.scene.label === "上班" && category === "鞋履") {
+          return "上班场景会避开高跟鞋，建议添加乐福鞋、平底鞋、小白鞋或低跟短靴。";
+        }
+        if (context.weather.tempC >= 20 && blockedReasons.length) {
+          return `${context.weather.tempC >= 30 ? "炎热天气" : "20℃以上"}不推荐厚重冬季单品，建议添加薄款${category}。`;
+        }
+        if (category === "外套") return context.weather.type === "雨" ? "雨天建议添加一件防水外套。" : "当前温度建议添加一件轻便外套。";
+        return `缺少合适的${category}，建议添加一件。`;
       }
 
       function buildReason(slots, context) {
@@ -1915,6 +2184,7 @@
           showToast("当前还没有完整穿搭可收藏。", "warn");
           return;
         }
+        triggerBounce(dom.favoriteCurrentBtn);
         const exists = state.favorites.some((favorite) => favorite.signature === state.currentOutfit.signature);
         if (exists) {
           showToast("这套穿搭已经收藏过了。", "warn");
@@ -1979,6 +2249,79 @@
         renderHeaderMeta();
         renderFavorites();
         showToast("收藏已删除。");
+      }
+
+      function exportData() {
+        /* 导出当前衣橱、收藏和设置，生成可迁移的 JSON 备份文件。 */
+        dom.dataMenu.classList.remove("is-open");
+        const payload = {
+          version: 3,
+          exportedAt: new Date().toISOString(),
+          items: state.items,
+          favorites: state.favorites,
+          settings: state.settings
+        };
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `衣橱数据_${formatDate(new Date().toISOString())}.json`;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+        showToast("衣橱备份已导出。");
+      }
+
+      async function handleImportFile(file) {
+        /* 导入会覆盖本地数据，所以先解析校验，再通过确认弹窗拦一次。 */
+        dom.dataMenu.classList.remove("is-open");
+        try {
+          const text = await file.text();
+          const raw = JSON.parse(text);
+          const imported = normalizeBackup(raw);
+          const ok = await confirmAction({
+            title: "导入数据",
+            message: `导入将覆盖当前所有数据，检测到 ${imported.items.length} 件衣服和 ${imported.favorites.length} 套收藏，确认继续吗？`,
+            confirmText: "确认导入"
+          });
+          if (!ok) return;
+          localStorage.setItem(STORAGE_KEYS.items, JSON.stringify(imported.items));
+          localStorage.setItem(STORAGE_KEYS.favorites, JSON.stringify(imported.favorites));
+          localStorage.setItem(STORAGE_KEYS.settings, JSON.stringify(imported.settings));
+          localStorage.removeItem("aiWardrobe.feedback");
+          showToast("导入成功，正在刷新页面。");
+          window.setTimeout(() => window.location.reload(), 450);
+        } catch (error) {
+          showToast("文件格式不正确，请选择正确的备份文件。", "error");
+        }
+      }
+
+      async function clearAllData() {
+        /* 一键清空属于高风险操作，必须通过二次确认后才会删除本地数据。 */
+        dom.dataMenu.classList.remove("is-open");
+        const ok = await confirmAction({
+          title: "一键清空",
+          message: "确定清空所有衣服和收藏穿搭吗？这个操作不能撤回。",
+          confirmText: "确认清空"
+        });
+        if (!ok) return;
+        localStorage.removeItem(STORAGE_KEYS.items);
+        localStorage.removeItem(STORAGE_KEYS.favorites);
+        localStorage.removeItem("aiWardrobe.feedback");
+        state.items = [];
+        state.favorites = [];
+        state.currentOutfit = null;
+        showToast("衣橱已清空，正在刷新页面。");
+        window.setTimeout(() => window.location.reload(), 450);
+      }
+
+      function normalizeBackup(raw) {
+        const items = normalizeItems(raw.items || []);
+        const favorites = normalizeFavorites(raw.favorites || raw.favoriteOutfits || []);
+        const settings = normalizeSettings(raw.settings || {});
+        if (!items.length && (!Array.isArray(raw.items) || raw.items.length)) throw new Error("invalid items");
+        return { items, favorites, settings };
       }
 
       async function handleFileBatch(fileList) {
@@ -2075,6 +2418,9 @@
           dom.itemNameInput.value = isEdit ? sourceItem.name : context.name;
           dom.itemCategorySelect.value = isEdit ? sourceItem.category : context.category;
           dom.itemTagsInput.value = (isEdit ? sourceItem.tags : context.tags || []).join(", ");
+          dom.itemSeasonSelect.value = isEdit ? sourceItem.season || inferSeason(sourceItem) : inferSeason({ ...context, tags: context.tags || [] });
+          dom.itemWarmLevelInput.value = isEdit ? sourceItem.warmLevel || inferWarmLevel(sourceItem) : inferWarmLevel(context);
+          dom.warmLevelValue.textContent = dom.itemWarmLevelInput.value;
 
           const cleanup = () => {
             dom.itemForm.removeEventListener("submit", handleSubmit);
@@ -2098,6 +2444,8 @@
               name: dom.itemNameInput.value.trim() || "未命名单品",
               category: dom.itemCategorySelect.value,
               tags: splitTags(dom.itemTagsInput.value),
+              season: dom.itemSeasonSelect.value,
+              warmLevel: Number(dom.itemWarmLevelInput.value),
               image,
               source: isEdit ? sourceItem.source || "upload" : "upload",
               sourceUrl: isEdit ? sourceItem.sourceUrl || "" : "",
@@ -2139,7 +2487,7 @@
         const sy = (image.height - cropSize) / 2;
 
         /* 统一背景、阴影、圆角和亮度，让不同来源图片在衣橱网格中保持同一质感。 */
-        ctx.fillStyle = "#F6F4EF";
+        ctx.fillStyle = "#FFFFFF";
         ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
         ctx.save();
         ctx.shadowColor = "rgba(45, 45, 45, 0.16)";
@@ -2306,6 +2654,36 @@
         return dictionary.filter((keyword) => String(text).includes(keyword));
       }
 
+      function itemText(item) {
+        return `${item?.name || ""} ${item?.category || ""} ${(item?.tags || []).join(" ")}`.toLowerCase();
+      }
+
+      /* 旧数据没有季节字段时，根据名称、分类和标签做轻量推断，避免推荐逻辑丢失上下文。 */
+      function inferSeason(item) {
+        const text = itemText(item);
+        if (/羽绒|棉服|派克|羊绒|羊毛|加绒|雪地|毛线|手套|围巾|厚|保暖|冬/.test(text)) return "冬";
+        if (/短袖|短裤|凉鞋|防晒|亚麻|薄款|夏/.test(text)) return "夏";
+        if (/风衣|针织|开衫|春|秋/.test(text)) return "春";
+        return "四季";
+      }
+
+      /* 保暖等级 1-5：越厚越暖。推荐规则会用它过滤高温下的冬季单品。 */
+      function inferWarmLevel(item) {
+        const text = itemText(item);
+        if (/羽绒|棉服|派克|雪地|加绒|棉裤|厚大衣/.test(text)) return 5;
+        if (/羊绒|羊毛|毛衣|高领|大衣|保暖|厚/.test(text)) return 4;
+        if (/外套|风衣|针织|卫衣|长袖|长裤|牛仔/.test(text)) return 3;
+        if (/短袖|衬衫|薄款|半身裙|连衣裙|运动裤/.test(text)) return 2;
+        if (/凉鞋|短裤|背心|防晒/.test(text)) return 1;
+        return item?.category === "外套" ? 3 : 2;
+      }
+
+      function clampWarmLevel(value) {
+        const number = Number(value);
+        if (!Number.isFinite(number)) return 2;
+        return Math.min(5, Math.max(1, Math.round(number)));
+      }
+
       function cleanFileName(name) {
         return String(name).replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ").trim().slice(0, 48) || "未命名单品";
       }
@@ -2323,6 +2701,13 @@
       function setButtonLoading(button, isLoading, label) {
         button.disabled = isLoading;
         button.innerHTML = isLoading ? `<span class="loading-dot" aria-hidden="true"></span>${escapeHtml(label)}` : escapeHtml(label);
+      }
+
+      function triggerBounce(element) {
+        element.classList.remove("is-bouncing");
+        void element.offsetWidth;
+        element.classList.add("is-bouncing");
+        window.setTimeout(() => element.classList.remove("is-bouncing"), 460);
       }
 
       function showToast(message, type = "success") {
@@ -2369,17 +2754,22 @@
         const now = new Date().toISOString();
         return rawItems
           .filter((item) => item && ITEM_CATEGORIES.includes(item.category) && typeof item.image === "string")
-          .map((item) => ({
-            id: typeof item.id === "string" ? item.id : createId("item"),
-            name: String(item.name || "未命名单品").slice(0, 48),
-            category: item.category,
-            tags: Array.isArray(item.tags) ? item.tags.map(String).filter(Boolean).slice(0, 16) : splitTags(item.tags),
-            image: item.image,
-            source: item.source || "upload",
-            sourceUrl: item.sourceUrl || "",
-            createdAt: item.createdAt || now,
-            updatedAt: item.updatedAt || now
-          }));
+          .map((item) => {
+            const normalized = {
+              id: typeof item.id === "string" ? item.id : createId("item"),
+              name: String(item.name || "未命名单品").slice(0, 48),
+              category: item.category,
+              tags: Array.isArray(item.tags) ? item.tags.map(String).filter(Boolean).slice(0, 16) : splitTags(item.tags),
+              image: item.image,
+              source: item.source || "upload",
+              sourceUrl: item.sourceUrl || "",
+              createdAt: item.createdAt || now,
+              updatedAt: item.updatedAt || now
+            };
+            normalized.season = ["春", "夏", "秋", "冬", "四季"].includes(item.season) ? item.season : inferSeason(normalized);
+            normalized.warmLevel = clampWarmLevel(item.warmLevel || inferWarmLevel(normalized));
+            return normalized;
+          });
       }
 
       function normalizeSettings(settings) {
