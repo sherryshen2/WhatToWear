@@ -1829,7 +1829,7 @@
         <div class="outfit-body">
           <div class="outfit-toolbar">
             <button class="button primary" id="shuffleBtn" type="button">换一套</button>
-            <button class="button lucky-button" id="luckyDrawBtn" type="button">抽取幸运穿搭</button>
+            <button class="button lucky-button" id="luckyDrawBtn" type="button">抽取幸运元素</button>
             <button class="button warm" id="favoriteCurrentBtn" type="button">收藏这套穿搭</button>
           </div>
 
@@ -2072,6 +2072,7 @@
           pool: [],
           items: [],
           angle: 0,
+          targetAngle: 0,
           direction: 1,
           frame: 0,
           lastTime: 0,
@@ -2538,6 +2539,7 @@
         /* 确认抽取后先用 Fisher-Yates 洗牌，避免卡片按分类或录入顺序出现。 */
         state.lucky.items = shuffleLuckyItems(items).slice(0, 30);
         state.lucky.angle = 0;
+        state.lucky.targetAngle = 0;
         state.lucky.direction = 1;
         state.lucky.selectedIndex = -1;
         state.lucky.isSelected = false;
@@ -2550,7 +2552,7 @@
         overlay.innerHTML = `
           <header class="lucky-overlay-header">
             <div>
-              <h2>✨ 抽取幸运穿搭</h2>
+              <h2>✨ 抽取幸运元素</h2>
               <div class="lucky-status-row">
                 <span class="lucky-camera-chip" id="luckyCameraChip"><span class="lucky-camera-dot"></span><span id="luckyCameraText">正在准备手势识别</span></span>
                 <span id="luckyStatusText">可使用底部按钮或键盘操作。</span>
@@ -2592,6 +2594,7 @@
         document.addEventListener("keydown", state.lucky.keyHandler);
         updateLuckyCards();
         setLuckyStatus("卡片已随机打乱，静止等待手势或按钮操作。");
+        startLuckyAnimation();
         startLuckyGestureControl();
       }
 
@@ -2656,9 +2659,23 @@
       }
 
       function startLuckyAnimation() {
-        /* 第五版后不再自动旋转；保留函数只用于兼容旧调用，实际只刷新一次位置。 */
         cancelLuckyFrame();
-        updateLuckyCards();
+        /* 只做平滑插值：没有手势或按钮输入时 targetAngle 不变，卡片不会自行旋转。 */
+        const tick = () => {
+          if (!state.lucky.overlay) return;
+          if (!state.lucky.isSelected) {
+            const diff = getLuckyAngleDelta(state.lucky.targetAngle, state.lucky.angle);
+            if (Math.abs(diff) > 0.02) {
+              state.lucky.angle = normalizeLuckyAngle(state.lucky.angle + diff * 0.22);
+              updateLuckyCards();
+            } else if (state.lucky.angle !== state.lucky.targetAngle) {
+              state.lucky.angle = state.lucky.targetAngle;
+              updateLuckyCards();
+            }
+          }
+          state.lucky.frame = requestAnimationFrame(tick);
+        };
+        state.lucky.frame = requestAnimationFrame(tick);
       }
 
       function cancelLuckyFrame() {
@@ -2674,8 +2691,8 @@
         const cards = overlay.querySelectorAll(".lucky-card");
         const count = Math.max(1, state.lucky.items.length);
         const stageWidth = stage.clientWidth || window.innerWidth;
-        const radius = Math.min(stageWidth * 0.36, 360);
-        const zRadius = state.lucky.mode === "ring" ? radius * 0.88 : radius * 0.42;
+        const radius = Math.min(Math.max(stageWidth * 0.34, 190), 390);
+        const zRadius = state.lucky.mode === "ring" ? radius * 0.86 : radius * 0.58;
 
         cards.forEach((card, index) => {
           const selected = index === state.lucky.selectedIndex;
@@ -2687,7 +2704,7 @@
             card.style.zIndex = "2000";
             card.style.visibility = "visible";
             card.style.pointerEvents = "auto";
-            card.style.transform = "translate(-50%, -72%) translateZ(240px) scale(1.9) rotateY(0deg)";
+            card.style.transform = "translate(-50%, -72%) translateZ(240px) scale(1.9)";
             return;
           }
           if (state.lucky.isSelected) {
@@ -2702,13 +2719,13 @@
           const x = Math.sin(rad) * radius;
           const z = Math.cos(rad) * zRadius;
           const depth = (Math.cos(rad) + 1) / 2;
-          const y = state.lucky.mode === "ring" ? Math.sin(rad * 2) * 24 : Math.sin(rad) * 10;
           const scale = 0.68 + depth * 0.36;
           card.style.opacity = String(0.38 + depth * 0.56);
           card.style.zIndex = String(Math.round(500 + depth * 800));
           card.style.visibility = "visible";
           card.style.pointerEvents = "auto";
-          card.style.transform = `translate(-50%, -50%) translate3d(${x}px, ${y}px, ${z}px) scale(${scale}) rotateY(${-angle * 0.24}deg)`;
+          /* 修改点：卡片只做 X/Z 轴位移和缩放，外层不再 rotateY/rotateX，始终正对屏幕。 */
+          card.style.transform = `translate(-50%, -50%) translate3d(${x}px, 0, ${z}px) scale(${scale})`;
         });
       }
 
@@ -2722,23 +2739,25 @@
       function nudgeLuckyCarousel(direction) {
         if (state.lucky.isSelected) return;
         state.lucky.direction = direction >= 0 ? 1 : -1;
-        state.lucky.angle += state.lucky.direction * 36;
-        state.lucky.angle = normalizeLuckyAngle(state.lucky.angle);
-        updateLuckyCards();
+        state.lucky.targetAngle = normalizeLuckyAngle(state.lucky.targetAngle + state.lucky.direction * 42);
         setLuckyStatus(direction >= 0 ? "向右滚动一格。" : "向左滚动一格。");
       }
 
       function rotateLuckyCarouselByGesture(deltaX) {
         if (state.lucky.isSelected) return;
-        /* 手掌水平位移映射为角度增量：移动越大，旋转越多；停止移动时没有惯性。 */
-        const angleDelta = Math.max(-72, Math.min(72, deltaX * 620));
-        if (Math.abs(angleDelta) < 0.8) return;
-        state.lucky.angle = normalizeLuckyAngle(state.lucky.angle + angleDelta);
-        updateLuckyCards();
+        /* 提高手势灵敏度：更小的水平位移也能推动目标角度，再由动画循环平滑追随。 */
+        const angleDelta = Math.max(-96, Math.min(96, deltaX * 1250));
+        if (Math.abs(angleDelta) < 0.5) return false;
+        state.lucky.targetAngle = normalizeLuckyAngle(state.lucky.targetAngle + angleDelta);
+        return true;
       }
 
       function normalizeLuckyAngle(angle) {
         return ((angle % 360) + 360) % 360;
+      }
+
+      function getLuckyAngleDelta(target, current) {
+        return ((target - current + 540) % 360) - 180;
       }
 
       function getFrontLuckyIndex() {
@@ -2796,6 +2815,7 @@
         /* 再抽一次时重新 Fisher-Yates 洗牌，保证下一轮顺序重新随机。 */
         state.lucky.items = shuffleLuckyItems(state.lucky.pool).slice(0, 30);
         state.lucky.angle = 0;
+        state.lucky.targetAngle = 0;
         state.lucky.selectedIndex = -1;
         state.lucky.isSelected = false;
         state.lucky.mode = "carousel";
@@ -2902,8 +2922,9 @@
           state.lucky.lastGestureAt = now;
           return;
         }
-        if (Math.abs(dx) > 0.006) {
-          rotateLuckyCarouselByGesture(dx);
+        if (Math.abs(dx) > 0.002) {
+          const rotated = rotateLuckyCarouselByGesture(dx);
+          if (!rotated) return;
           setLuckyStatus(dx > 0 ? "检测到向右滑动，卡片随手势旋转。" : "检测到向左滑动，卡片随手势旋转。");
         }
       }
@@ -2947,12 +2968,13 @@
         state.lucky.overlay = null;
         state.lucky.pool = [];
         state.lucky.items = [];
+        state.lucky.targetAngle = 0;
         state.lucky.selectedIndex = -1;
         state.lucky.isSelected = false;
         state.lucky.camera = null;
         state.lucky.hands = null;
         state.lucky.video = null;
-        if (!options.silent) showToast("已退出幸运穿搭抽取。");
+        if (!options.silent) showToast("已退出幸运元素抽取。");
       }
 
       async function bootAutoOutfit() {
