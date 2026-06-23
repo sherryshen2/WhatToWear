@@ -846,8 +846,14 @@
       flex-wrap: wrap;
       gap: 8px;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
       margin-bottom: 12px;
+    }
+
+    .lucky-button {
+      border-color: var(--line);
+      background: var(--paper);
+      color: var(--ink);
     }
 
     .outfit-stage {
@@ -1048,6 +1054,354 @@
       background: var(--paper);
       color: var(--muted);
       font-weight: 900;
+    }
+
+    .lucky-range-card {
+      width: min(480px, calc(100vw - 28px));
+      padding: 20px;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, var(--paper), rgba(232, 213, 183, 0.22));
+      box-shadow: 0 28px 80px rgba(45, 45, 45, 0.22);
+    }
+
+    .lucky-range-card h3 {
+      margin-bottom: 8px;
+      font-size: 20px;
+    }
+
+    .lucky-range-card p {
+      margin-bottom: 16px;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .lucky-category-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .lucky-check {
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 10px;
+      border: 1px solid var(--line);
+      border-radius: var(--soft-radius);
+      background: var(--paper);
+      font-weight: 760;
+      cursor: pointer;
+    }
+
+    .lucky-check input {
+      accent-color: var(--ink);
+    }
+
+    .lucky-check.is-disabled {
+      opacity: 0.48;
+      cursor: not-allowed;
+    }
+
+    .lucky-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      gap: 14px;
+      padding: clamp(16px, 3vw, 32px);
+      color: var(--paper);
+      background:
+        radial-gradient(circle at 20% 16%, rgba(232, 213, 183, 0.24), transparent 28vw),
+        linear-gradient(135deg, rgba(20, 20, 30, 0.9), rgba(45, 45, 45, 0.92));
+      backdrop-filter: blur(5px);
+      overflow: hidden;
+    }
+
+    .lucky-overlay-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .lucky-overlay-header h2 {
+      margin: 0;
+      font-size: clamp(24px, 4vw, 42px);
+      line-height: 1.1;
+    }
+
+    .lucky-close {
+      min-height: 40px;
+      padding: 8px 13px;
+      border: 1px solid rgba(255, 255, 255, 0.34);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      color: var(--paper);
+      font-weight: 800;
+    }
+
+    .lucky-status-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      color: rgba(255, 255, 255, 0.82);
+      font-size: 13px;
+    }
+
+    .lucky-camera-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 9px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .lucky-camera-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--warm);
+      box-shadow: 0 0 12px rgba(232, 213, 183, 0.7);
+    }
+
+    .lucky-camera-chip.is-ready .lucky-camera-dot {
+      background: var(--paper);
+    }
+
+    .lucky-video {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      width: 132px;
+      aspect-ratio: 4 / 3;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--soft-radius);
+      opacity: 0.22;
+      object-fit: cover;
+      pointer-events: none;
+      transform: scaleX(-1);
+    }
+
+    .lucky-stage {
+      position: relative;
+      min-height: 420px;
+      height: min(72vh, 620px);
+      display: grid;
+      place-items: center;
+      perspective: 1100px;
+      transform-style: preserve-3d;
+      -webkit-transform-style: preserve-3d;
+    }
+
+    .lucky-orbit {
+      position: absolute;
+      inset: 0;
+      transform-style: preserve-3d;
+      -webkit-transform-style: preserve-3d;
+    }
+
+    .lucky-card {
+      appearance: none;
+      -webkit-appearance: none;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: clamp(118px, 11vw, 156px);
+      min-width: 118px;
+      height: clamp(118px, 11vw, 156px);
+      aspect-ratio: 1 / 1;
+      padding: 0;
+      border: 0;
+      border-radius: 22px;
+      background: transparent;
+      color: inherit;
+      transform-style: preserve-3d;
+      -webkit-transform-style: preserve-3d;
+      transform: translate(-50%, -50%);
+      transition: transform 0.42s ease, opacity 0.26s ease, filter 0.26s ease;
+    }
+
+    .lucky-card.is-selected {
+      filter: drop-shadow(0 0 24px rgba(232, 213, 183, 0.8));
+    }
+
+    .lucky-card.is-hidden {
+      opacity: 0 !important;
+      pointer-events: none;
+      visibility: hidden;
+    }
+
+    .lucky-card.is-selected::after {
+      content: "";
+      position: absolute;
+      inset: -12px;
+      border: 2px solid rgba(232, 213, 183, 0.8);
+      border-radius: 28px;
+      animation: luckyPulse 1.4s ease-in-out infinite;
+    }
+
+    .lucky-card-inner {
+      display: block;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      border-radius: inherit;
+      transform-style: preserve-3d;
+      -webkit-transform-style: preserve-3d;
+      transition: transform 0.62s ease;
+    }
+
+    .lucky-card.is-flipped .lucky-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .lucky-card.is-selected .lucky-card-name {
+      display: none;
+    }
+
+    .lucky-card-face {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: inherit;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      box-shadow: 0 20px 44px rgba(0, 0, 0, 0.26);
+    }
+
+    .lucky-card-back {
+      background:
+        radial-gradient(circle at 28% 22%, rgba(232, 213, 183, 0.34), transparent 44%),
+        linear-gradient(145deg, rgba(45, 45, 45, 0.98), rgba(20, 20, 30, 0.92));
+      color: var(--warm);
+      font-size: 42px;
+      font-weight: 900;
+    }
+
+    .lucky-card-front {
+      background: var(--paper);
+      transform: rotateY(180deg);
+    }
+
+    .lucky-card-front img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .lucky-card-name {
+      position: absolute;
+      left: 8px;
+      right: 8px;
+      bottom: 8px;
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: rgba(45, 45, 45, 0.72);
+      color: var(--paper);
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .lucky-selection-panel {
+      position: absolute;
+      top: calc(50% + clamp(118px, 17vh, 178px));
+      left: 50%;
+      z-index: 2100;
+      display: grid;
+      justify-items: center;
+      gap: 10px;
+      width: min(520px, calc(100% - 28px));
+      transform: translateX(-50%);
+    }
+
+    .lucky-selection-panel[hidden] {
+      display: none;
+    }
+
+    .lucky-picked-meta {
+      max-width: 100%;
+      padding: 10px 14px;
+      border: 1px solid rgba(232, 213, 183, 0.5);
+      border-radius: 999px;
+      background: rgba(45, 45, 45, 0.84);
+      color: var(--paper);
+      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.26);
+      font-size: 14px;
+      font-weight: 820;
+      overflow: hidden;
+      text-align: center;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .lucky-redraw-button {
+      min-height: 42px;
+      padding: 10px 16px;
+      border: 1px solid rgba(232, 213, 183, 0.58);
+      border-radius: 999px;
+      background: var(--warm);
+      color: var(--ink);
+      box-shadow: 0 16px 34px rgba(0, 0, 0, 0.18);
+      font-weight: 900;
+    }
+
+    .lucky-redraw-button[hidden] {
+      display: none;
+    }
+
+    .lucky-footer {
+      display: grid;
+      gap: 10px;
+      justify-items: center;
+    }
+
+    .lucky-hints,
+    .lucky-controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .lucky-hints span,
+    .lucky-control-button {
+      padding: 8px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 13px;
+    }
+
+    .lucky-control-button {
+      color: var(--paper);
+      font-weight: 800;
+    }
+
+    @keyframes luckyPulse {
+      0%,
+      100% {
+        opacity: 0.5;
+        transform: scale(0.98) rotate(0deg);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.05) rotate(8deg);
+      }
     }
 
     dialog {
@@ -1379,6 +1733,27 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
+      .lucky-category-list,
+      .lucky-hints,
+      .lucky-controls {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .lucky-overlay {
+        padding: 14px;
+      }
+
+      .lucky-stage {
+        min-height: 360px;
+      }
+
+      .lucky-video {
+        width: 92px;
+        right: 12px;
+        bottom: 12px;
+      }
+
       .modal-footer,
       .dialog-actions {
         display: grid;
@@ -1454,6 +1829,7 @@
         <div class="outfit-body">
           <div class="outfit-toolbar">
             <button class="button primary" id="shuffleBtn" type="button">换一套</button>
+            <button class="button lucky-button" id="luckyDrawBtn" type="button">抽取幸运穿搭</button>
             <button class="button warm" id="favoriteCurrentBtn" type="button">收藏这套穿搭</button>
           </div>
 
@@ -1584,6 +1960,18 @@
     </div>
   </dialog>
 
+  <dialog id="luckyRangeDialog">
+    <form class="lucky-range-card" id="luckyRangeForm">
+      <h3>选择抽取范围</h3>
+      <p>选择一个或多个单品类型，系统会从对应衣橱里抽取今日幸运元素。</p>
+      <div class="lucky-category-list" id="luckyCategoryList"></div>
+      <div class="dialog-actions">
+        <button class="button secondary" id="luckyRangeCancelBtn" type="button">取消</button>
+        <button class="button primary" id="luckyRangeConfirmBtn" type="submit">确认抽取</button>
+      </div>
+    </form>
+  </dialog>
+
   <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="true"></div>
 
   <script>
@@ -1605,6 +1993,10 @@
         { id: "sport", label: "运动", icon: "动", keywords: ["运动", "弹力", "透气", "速干", "卫衣", "运动鞋"] },
         { id: "home", label: "居家", icon: "家", keywords: ["居家", "柔软", "舒适", "宽松", "针织", "棉"] },
         { id: "party", label: "派对", icon: "夜", keywords: ["派对", "亮片", "设计感", "皮革", "高跟", "金属", "黑色"] }
+      ];
+      const MEDIAPIPE_SCRIPTS = [
+        "https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js",
+        "https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"
       ];
 
       const dom = {
@@ -1631,10 +2023,16 @@
         weatherCard: document.querySelector("#weatherCard"),
         sceneGrid: document.querySelector("#sceneGrid"),
         shuffleBtn: document.querySelector("#shuffleBtn"),
+        luckyDrawBtn: document.querySelector("#luckyDrawBtn"),
         favoriteCurrentBtn: document.querySelector("#favoriteCurrentBtn"),
         outfitStage: document.querySelector("#outfitStage"),
         toggleFavoritesBtn: document.querySelector("#toggleFavoritesBtn"),
         favoritesList: document.querySelector("#favoritesList"),
+        luckyRangeDialog: document.querySelector("#luckyRangeDialog"),
+        luckyRangeForm: document.querySelector("#luckyRangeForm"),
+        luckyCategoryList: document.querySelector("#luckyCategoryList"),
+        luckyRangeCancelBtn: document.querySelector("#luckyRangeCancelBtn"),
+        luckyRangeConfirmBtn: document.querySelector("#luckyRangeConfirmBtn"),
         itemDialog: document.querySelector("#itemDialog"),
         itemForm: document.querySelector("#itemForm"),
         itemDialogTitle: document.querySelector("#itemDialogTitle"),
@@ -1669,6 +2067,25 @@
         currentOutfit: null,
         generationIndex: 0,
         weatherTimer: null,
+        lucky: {
+          overlay: null,
+          pool: [],
+          items: [],
+          angle: 0,
+          direction: 1,
+          frame: 0,
+          lastTime: 0,
+          selectedIndex: -1,
+          isSelected: false,
+          mode: "carousel",
+          scriptsPromise: null,
+          camera: null,
+          hands: null,
+          video: null,
+          keyHandler: null,
+          lastPalmX: null,
+          lastGestureAt: 0
+        },
         favoritesOpen: true
       };
 
@@ -1777,6 +2194,12 @@
           triggerBounce(dom.shuffleBtn);
           generateOneOutfit({ requireDifferent: true, manual: true });
         });
+        dom.luckyDrawBtn.addEventListener("click", openLuckyRangeDialog);
+        dom.luckyRangeCancelBtn.addEventListener("click", () => dom.luckyRangeDialog.close());
+        dom.luckyRangeForm.addEventListener("submit", (event) => {
+          event.preventDefault();
+          confirmLuckyRange();
+        });
         dom.favoriteCurrentBtn.addEventListener("click", favoriteCurrentOutfit);
         dom.toggleFavoritesBtn.addEventListener("click", () => {
           state.favoritesOpen = !state.favoritesOpen;
@@ -1823,6 +2246,7 @@
         const favoriteCount = state.favorites.length;
         dom.navMeta.textContent = `衣橱共 ${state.items.length} 件单品 · 已收藏 ${favoriteCount} 套穿搭`;
         dom.closetCountText.textContent = `衣橱共 ${state.items.length} 件单品`;
+        dom.luckyDrawBtn.disabled = !state.items.length;
       }
 
       function renderTabs() {
@@ -2073,6 +2497,462 @@
           const snapshot = snapshots.find((item) => item.id === itemId);
           return currentItem || snapshot || null;
         }).filter(Boolean);
+      }
+
+      function openLuckyRangeDialog() {
+        if (!state.items.length) {
+          showToast("衣橱里还没有单品，先添加一件再抽取。", "warn");
+          return;
+        }
+        /* 每次打开时根据当前衣橱数量重建范围选项，避免旧数据残留。 */
+        dom.luckyCategoryList.innerHTML = ITEM_CATEGORIES.map((category) => {
+          const count = state.items.filter((item) => item.category === category).length;
+          return `
+            <label class="lucky-check ${count ? "" : "is-disabled"}">
+              <input type="checkbox" name="luckyCategory" value="${escapeHtml(category)}" ${count ? "checked" : "disabled"}>
+              <span>${escapeHtml(category)} (${count})</span>
+            </label>
+          `;
+        }).join("");
+        dom.luckyRangeDialog.showModal();
+      }
+
+      function confirmLuckyRange() {
+        const categories = Array.from(dom.luckyCategoryList.querySelectorAll("input:checked")).map((input) => input.value);
+        if (!categories.length) {
+          showToast("请至少选择一个单品类型。", "warn");
+          return;
+        }
+        const luckyItems = state.items.filter((item) => categories.includes(item.category));
+        if (!luckyItems.length) {
+          showToast("所选范围内没有可抽取的单品。", "warn");
+          return;
+        }
+        dom.luckyRangeDialog.close();
+        openLuckyOverlay(luckyItems);
+      }
+
+      function openLuckyOverlay(items) {
+        closeLuckyOverlay({ silent: true });
+        state.lucky.pool = items;
+        /* 确认抽取后先用 Fisher-Yates 洗牌，避免卡片按分类或录入顺序出现。 */
+        state.lucky.items = shuffleLuckyItems(items).slice(0, 30);
+        state.lucky.angle = 0;
+        state.lucky.direction = 1;
+        state.lucky.selectedIndex = -1;
+        state.lucky.isSelected = false;
+        state.lucky.mode = "carousel";
+        state.lucky.lastPalmX = null;
+        state.lucky.lastGestureAt = 0;
+
+        const overlay = document.createElement("div");
+        overlay.className = "lucky-overlay";
+        overlay.innerHTML = `
+          <header class="lucky-overlay-header">
+            <div>
+              <h2>✨ 抽取幸运穿搭</h2>
+              <div class="lucky-status-row">
+                <span class="lucky-camera-chip" id="luckyCameraChip"><span class="lucky-camera-dot"></span><span id="luckyCameraText">正在准备手势识别</span></span>
+                <span id="luckyStatusText">可使用底部按钮或键盘操作。</span>
+              </div>
+            </div>
+            <button class="lucky-close" type="button" data-lucky-action="close">✕ 退出</button>
+          </header>
+          <section class="lucky-stage" id="luckyStage" aria-live="polite">
+            <div class="lucky-orbit" id="luckyOrbit">
+              ${state.lucky.items.map((item, index) => renderLuckyCard(item, index)).join("")}
+            </div>
+            <div class="lucky-selection-panel" id="luckySelectionPanel" hidden>
+              <div class="lucky-picked-meta" id="luckyPickedMeta"></div>
+              <button class="lucky-redraw-button" type="button" data-lucky-action="redraw" hidden>再抽一次</button>
+            </div>
+          </section>
+          <footer class="lucky-footer">
+            <div class="lucky-hints">
+              <span>🖐️ 张开手掌 → 立体环形</span>
+              <span>👈 左滑 / 👉 右滑 → 滚动</span>
+              <span>☝️ 伸出食指 → 选中</span>
+              <span>键盘：← → 滚动，空格选中，Esc 退出</span>
+            </div>
+            <div class="lucky-controls">
+              <button class="lucky-control-button" type="button" data-lucky-action="ring">立体环形</button>
+              <button class="lucky-control-button" type="button" data-lucky-action="left">向左滚动</button>
+              <button class="lucky-control-button" type="button" data-lucky-action="right">向右滚动</button>
+              <button class="lucky-control-button" type="button" data-lucky-action="select">选中当前</button>
+            </div>
+          </footer>
+          <video class="lucky-video" id="luckyVideo" playsinline muted></video>
+        `;
+        document.body.appendChild(overlay);
+        state.lucky.overlay = overlay;
+        state.lucky.video = overlay.querySelector("#luckyVideo");
+
+        overlay.addEventListener("click", handleLuckyOverlayClick);
+        state.lucky.keyHandler = handleLuckyKeydown;
+        document.addEventListener("keydown", state.lucky.keyHandler);
+        updateLuckyCards();
+        setLuckyStatus("卡片已随机打乱，静止等待手势或按钮操作。");
+        startLuckyGestureControl();
+      }
+
+      function shuffleLuckyItems(items) {
+        /* Fisher-Yates 洗牌：从后往前随机交换，确保每种排列概率一致。 */
+        const shuffled = [...items];
+        for (let index = shuffled.length - 1; index > 0; index -= 1) {
+          const randomIndex = Math.floor(Math.random() * (index + 1));
+          [shuffled[index], shuffled[randomIndex]] = [shuffled[randomIndex], shuffled[index]];
+        }
+        return shuffled;
+      }
+
+      function renderLuckyCard(item, index) {
+        return `
+          <button class="lucky-card" type="button" data-lucky-index="${index}" aria-label="幸运卡片 ${escapeHtml(item.name)}">
+            <span class="lucky-card-inner">
+              <span class="lucky-card-face lucky-card-back">?</span>
+              <span class="lucky-card-face lucky-card-front">
+                <img src="${item.image}" alt="${escapeHtml(item.name)}">
+                <span class="lucky-card-name">${escapeHtml(item.name)}</span>
+              </span>
+            </span>
+          </button>
+        `;
+      }
+
+      function handleLuckyOverlayClick(event) {
+        const actionButton = event.target.closest("[data-lucky-action]");
+        const card = event.target.closest("[data-lucky-index]");
+        if (card) {
+          selectLuckyCard(Number(card.dataset.luckyIndex));
+          return;
+        }
+        if (!actionButton) return;
+        const action = actionButton.dataset.luckyAction;
+        if (action === "close") closeLuckyOverlay();
+        if (action === "redraw") resetLuckyDraw();
+        if (state.lucky.isSelected) return;
+        if (action === "ring") setLuckyMode("ring");
+        if (action === "left") nudgeLuckyCarousel(-1);
+        if (action === "right") nudgeLuckyCarousel(1);
+        if (action === "select") selectLuckyCard(getFrontLuckyIndex());
+      }
+
+      function handleLuckyKeydown(event) {
+        if (!state.lucky.overlay) return;
+        if (event.key === "Escape") closeLuckyOverlay();
+        if (state.lucky.isSelected) return;
+        if (event.key === "ArrowLeft") {
+          event.preventDefault();
+          nudgeLuckyCarousel(-1);
+        }
+        if (event.key === "ArrowRight") {
+          event.preventDefault();
+          nudgeLuckyCarousel(1);
+        }
+        if (event.code === "Space") {
+          event.preventDefault();
+          selectLuckyCard(getFrontLuckyIndex());
+        }
+      }
+
+      function startLuckyAnimation() {
+        /* 第五版后不再自动旋转；保留函数只用于兼容旧调用，实际只刷新一次位置。 */
+        cancelLuckyFrame();
+        updateLuckyCards();
+      }
+
+      function cancelLuckyFrame() {
+        if (state.lucky.frame) cancelAnimationFrame(state.lucky.frame);
+        state.lucky.frame = 0;
+        state.lucky.lastTime = 0;
+      }
+
+      function updateLuckyCards() {
+        const overlay = state.lucky.overlay;
+        const stage = overlay?.querySelector("#luckyStage");
+        if (!overlay || !stage) return;
+        const cards = overlay.querySelectorAll(".lucky-card");
+        const count = Math.max(1, state.lucky.items.length);
+        const stageWidth = stage.clientWidth || window.innerWidth;
+        const radius = Math.min(stageWidth * 0.36, 360);
+        const zRadius = state.lucky.mode === "ring" ? radius * 0.88 : radius * 0.42;
+
+        cards.forEach((card, index) => {
+          const selected = index === state.lucky.selectedIndex;
+          card.classList.toggle("is-selected", selected);
+          card.classList.toggle("is-flipped", selected);
+          card.classList.toggle("is-hidden", state.lucky.isSelected && !selected);
+          if (selected) {
+            card.style.opacity = "1";
+            card.style.zIndex = "2000";
+            card.style.visibility = "visible";
+            card.style.pointerEvents = "auto";
+            card.style.transform = "translate(-50%, -72%) translateZ(240px) scale(1.9) rotateY(0deg)";
+            return;
+          }
+          if (state.lucky.isSelected) {
+            card.style.opacity = "0";
+            card.style.zIndex = "0";
+            card.style.pointerEvents = "none";
+            card.style.visibility = "hidden";
+            return;
+          }
+          const angle = ((index / count) * 360 + state.lucky.angle + 360) % 360;
+          const rad = angle * Math.PI / 180;
+          const x = Math.sin(rad) * radius;
+          const z = Math.cos(rad) * zRadius;
+          const depth = (Math.cos(rad) + 1) / 2;
+          const y = state.lucky.mode === "ring" ? Math.sin(rad * 2) * 24 : Math.sin(rad) * 10;
+          const scale = 0.68 + depth * 0.36;
+          card.style.opacity = String(0.38 + depth * 0.56);
+          card.style.zIndex = String(Math.round(500 + depth * 800));
+          card.style.visibility = "visible";
+          card.style.pointerEvents = "auto";
+          card.style.transform = `translate(-50%, -50%) translate3d(${x}px, ${y}px, ${z}px) scale(${scale}) rotateY(${-angle * 0.24}deg)`;
+        });
+      }
+
+      function setLuckyMode(mode) {
+        if (state.lucky.isSelected) return;
+        state.lucky.mode = mode;
+        updateLuckyCards();
+        setLuckyStatus(mode === "ring" ? "已切换为立体环形视角。" : "已回到走马灯视角。");
+      }
+
+      function nudgeLuckyCarousel(direction) {
+        if (state.lucky.isSelected) return;
+        state.lucky.direction = direction >= 0 ? 1 : -1;
+        state.lucky.angle += state.lucky.direction * 36;
+        state.lucky.angle = normalizeLuckyAngle(state.lucky.angle);
+        updateLuckyCards();
+        setLuckyStatus(direction >= 0 ? "向右滚动一格。" : "向左滚动一格。");
+      }
+
+      function rotateLuckyCarouselByGesture(deltaX) {
+        if (state.lucky.isSelected) return;
+        /* 手掌水平位移映射为角度增量：移动越大，旋转越多；停止移动时没有惯性。 */
+        const angleDelta = Math.max(-72, Math.min(72, deltaX * 620));
+        if (Math.abs(angleDelta) < 0.8) return;
+        state.lucky.angle = normalizeLuckyAngle(state.lucky.angle + angleDelta);
+        updateLuckyCards();
+      }
+
+      function normalizeLuckyAngle(angle) {
+        return ((angle % 360) + 360) % 360;
+      }
+
+      function getFrontLuckyIndex() {
+        const count = state.lucky.items.length;
+        let bestIndex = 0;
+        let bestDistance = Infinity;
+        for (let index = 0; index < count; index += 1) {
+          if (index === state.lucky.selectedIndex) continue;
+          const angle = ((index / count) * 360 + state.lucky.angle + 360) % 360;
+          const distance = Math.min(angle, 360 - angle);
+          if (distance < bestDistance) {
+            bestDistance = distance;
+            bestIndex = index;
+          }
+        }
+        return bestIndex;
+      }
+
+      function selectLuckyCard(index) {
+        if (state.lucky.isSelected) return;
+        if (!Number.isInteger(index) || !state.lucky.items[index]) return;
+        state.lucky.selectedIndex = index;
+        state.lucky.isSelected = true;
+        updateLuckyCards();
+        updateLuckySelectionPanel();
+        setLuckyStatus(`已抽中：${state.lucky.items[index].name}。点击“再抽一次”可重新开始。`);
+      }
+
+      function updateLuckySelectionPanel() {
+        const panel = state.lucky.overlay?.querySelector("#luckySelectionPanel");
+        const meta = state.lucky.overlay?.querySelector("#luckyPickedMeta");
+        const redrawButton = state.lucky.overlay?.querySelector("[data-lucky-action='redraw']");
+        const item = state.lucky.items[state.lucky.selectedIndex];
+        if (!panel || !meta || !redrawButton) return;
+        if (!state.lucky.isSelected || !item) {
+          panel.hidden = true;
+          redrawButton.hidden = true;
+          meta.textContent = "";
+          return;
+        }
+        const tagText = getLuckyTagText(item);
+        meta.textContent = `${item.name} | ${tagText}`;
+        panel.hidden = false;
+        redrawButton.hidden = false;
+      }
+
+      function getLuckyTagText(item) {
+        const tags = Array.isArray(item.tags) ? item.tags.filter(Boolean) : [];
+        return tags.length ? tags.join("、") : "暂无标签";
+      }
+
+      function resetLuckyDraw() {
+        const orbit = state.lucky.overlay?.querySelector("#luckyOrbit");
+        if (!orbit) return;
+        /* 再抽一次时重新 Fisher-Yates 洗牌，保证下一轮顺序重新随机。 */
+        state.lucky.items = shuffleLuckyItems(state.lucky.pool).slice(0, 30);
+        state.lucky.angle = 0;
+        state.lucky.selectedIndex = -1;
+        state.lucky.isSelected = false;
+        state.lucky.mode = "carousel";
+        state.lucky.lastPalmX = null;
+        state.lucky.lastGestureAt = 0;
+        orbit.innerHTML = state.lucky.items.map((item, index) => renderLuckyCard(item, index)).join("");
+        updateLuckySelectionPanel();
+        updateLuckyCards();
+        setLuckyStatus("已重新随机打乱，卡片恢复背面朝上。");
+      }
+
+      function setLuckyStatus(message, cameraState = "") {
+        const status = state.lucky.overlay?.querySelector("#luckyStatusText");
+        const cameraText = state.lucky.overlay?.querySelector("#luckyCameraText");
+        const cameraChip = state.lucky.overlay?.querySelector("#luckyCameraChip");
+        if (status && message) status.textContent = message;
+        if (cameraText && cameraState) cameraText.textContent = cameraState;
+        if (cameraChip && cameraState) cameraChip.classList.toggle("is-ready", cameraState.includes("已开启"));
+      }
+
+      async function startLuckyGestureControl() {
+        if (!navigator.mediaDevices?.getUserMedia || (!window.isSecureContext && !["localhost", "127.0.0.1"].includes(location.hostname))) {
+          setLuckyStatus("当前环境不支持摄像头，已启用按钮和键盘控制。", "手势不可用");
+          return;
+        }
+        try {
+          await ensureMediaPipe();
+          if (!window.Hands || !window.Camera) throw new Error("MediaPipe 未就绪");
+          const hands = new Hands({
+            locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
+          });
+          hands.setOptions({
+            maxNumHands: 1,
+            modelComplexity: 0,
+            minDetectionConfidence: 0.62,
+            minTrackingConfidence: 0.55
+          });
+          hands.onResults(handleLuckyHandResults);
+          const camera = new Camera(state.lucky.video, {
+            onFrame: async () => {
+              if (state.lucky.video) await hands.send({ image: state.lucky.video });
+            },
+            width: 320,
+            height: 240
+          });
+          state.lucky.hands = hands;
+          state.lucky.camera = camera;
+          await camera.start();
+          setLuckyStatus("摄像头已开启，可以用手势控制。", "摄像头已开启");
+        } catch (error) {
+          setLuckyStatus("手势识别加载失败，已启用按钮和键盘控制。", "手势不可用");
+        }
+      }
+
+      function ensureMediaPipe() {
+        if (window.Hands && window.Camera) return Promise.resolve();
+        if (state.lucky.scriptsPromise) return state.lucky.scriptsPromise;
+        state.lucky.scriptsPromise = MEDIAPIPE_SCRIPTS.reduce((promise, src) => {
+          return promise.then(() => loadExternalScript(src));
+        }, Promise.resolve());
+        return state.lucky.scriptsPromise;
+      }
+
+      function loadExternalScript(src) {
+        return new Promise((resolve, reject) => {
+          const existing = document.querySelector(`script[src="${src}"]`);
+          if (existing) {
+            existing.addEventListener("load", resolve, { once: true });
+            existing.addEventListener("error", reject, { once: true });
+            if (existing.dataset.loaded === "true") resolve();
+            return;
+          }
+          const script = document.createElement("script");
+          script.src = src;
+          script.async = true;
+          script.crossOrigin = "anonymous";
+          script.onload = () => {
+            script.dataset.loaded = "true";
+            resolve();
+          };
+          script.onerror = reject;
+          document.head.appendChild(script);
+        });
+      }
+
+      function handleLuckyHandResults(results) {
+        const hand = results.multiHandLandmarks?.[0];
+        if (!hand || !state.lucky.overlay) {
+          state.lucky.lastPalmX = null;
+          setLuckyStatus("等待识别手掌。");
+          return;
+        }
+        if (state.lucky.isSelected) return;
+        const now = Date.now();
+        const openPalm = isLuckyOpenPalm(hand);
+        const pointing = isLuckyIndexPoint(hand);
+        const palmX = hand[0].x;
+        const dx = state.lucky.lastPalmX == null ? 0 : palmX - state.lucky.lastPalmX;
+        state.lucky.lastPalmX = palmX;
+
+        if (openPalm && state.lucky.mode !== "ring") setLuckyMode("ring");
+        if (pointing && now - state.lucky.lastGestureAt > 900) {
+          selectLuckyCard(getFrontLuckyIndex());
+          state.lucky.lastGestureAt = now;
+          return;
+        }
+        if (Math.abs(dx) > 0.006) {
+          rotateLuckyCarouselByGesture(dx);
+          setLuckyStatus(dx > 0 ? "检测到向右滑动，卡片随手势旋转。" : "检测到向左滑动，卡片随手势旋转。");
+        }
+      }
+
+      function isLuckyOpenPalm(hand) {
+        return isLuckyThumbOpen(hand)
+          && hand[8].y < hand[6].y - 0.025
+          && hand[12].y < hand[10].y - 0.025
+          && hand[16].y < hand[14].y - 0.02
+          && hand[20].y < hand[18].y - 0.02;
+      }
+
+      function isLuckyIndexPoint(hand) {
+        const indexOpen = hand[8].y < hand[6].y - 0.035;
+        const middleFolded = hand[12].y > hand[10].y - 0.005;
+        const ringFolded = hand[16].y > hand[14].y - 0.005;
+        const pinkyFolded = hand[20].y > hand[18].y - 0.005;
+        return indexOpen && middleFolded && ringFolded && pinkyFolded;
+      }
+
+      function isLuckyThumbOpen(hand) {
+        return distance2d(hand[4], hand[0]) > distance2d(hand[3], hand[0]) * 1.08;
+      }
+
+      function distance2d(a, b) {
+        return Math.hypot(a.x - b.x, a.y - b.y);
+      }
+
+      function closeLuckyOverlay(options = {}) {
+        cancelLuckyFrame();
+        if (state.lucky.keyHandler) document.removeEventListener("keydown", state.lucky.keyHandler);
+        state.lucky.keyHandler = null;
+        try {
+          if (state.lucky.camera?.stop) state.lucky.camera.stop();
+          if (state.lucky.video?.srcObject) state.lucky.video.srcObject.getTracks().forEach((track) => track.stop());
+          if (state.lucky.hands?.close) state.lucky.hands.close();
+        } catch (error) {
+          /* 关闭摄像头失败不影响页面恢复，浏览器会在覆盖层移除后释放资源。 */
+        }
+        state.lucky.overlay?.remove();
+        state.lucky.overlay = null;
+        state.lucky.pool = [];
+        state.lucky.items = [];
+        state.lucky.selectedIndex = -1;
+        state.lucky.isSelected = false;
+        state.lucky.camera = null;
+        state.lucky.hands = null;
+        state.lucky.video = null;
+        if (!options.silent) showToast("已退出幸运穿搭抽取。");
       }
 
       async function bootAutoOutfit() {
